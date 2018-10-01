@@ -48,10 +48,11 @@ namespace OdeToFood {
                     if (context.Request.Path.StartsWithSegments ("/mym")) {
 
                         await context.Response.WriteAsync ("HIT!");
-                          logger.LogInformation ("Request handled");
+                        logger.LogInformation ("Request handled");
 
                     } else {
-                        next (context);
+                        await next(context);
+                        logger.LogInformation ("Request outgoing");
                     }
                 };
 
