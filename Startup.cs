@@ -35,7 +35,7 @@ namespace OdeToFood {
         public void Configure (IApplicationBuilder app, IHostingEnvironment env, IGreeter Greeter, ILogger<Startup> logger) {
 
             // if (env.IsDevelopment ()) {
-            //     app.UseDeveloperExceptionPage ();
+            app.UseDeveloperExceptionPage ();
             // } else {
             //     app.UseExceptionHandler ("/Error");
             //     app.UseHsts ();
