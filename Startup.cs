@@ -41,31 +41,32 @@ namespace OdeToFood {
             //     app.UseHsts ();
             // }
 
-            app.Use (next => {
+            // app.Use (next => {
 
-                return async context => {
-                    logger.LogInformation ("Request incoming");
-                    if (context.Request.Path.StartsWithSegments ("/mym")) {
+            //     return async context => {
+            //         logger.LogInformation ("Request incoming");
+            //         if (context.Request.Path.StartsWithSegments ("/mym")) {
 
-                        await context.Response.WriteAsync ("HIT!");
-                        logger.LogInformation ("Request handled");
+            //             await context.Response.WriteAsync ("HIT!");
+            //             logger.LogInformation ("Request handled");
 
-                    } else {
-                        await next(context);
-                        logger.LogInformation ("Request outgoing");
-                    }
-                };
+            //         } else {
+            //             await next(context);
+            //             logger.LogInformation ("Request outgoing");
+            //         }
+            //     };
 
-            });
+            // });
 
-            app.UseWelcomePage (new WelcomePageOptions {
+            // app.UseWelcomePage (new WelcomePageOptions {
 
-                Path = "/wp"
+            //     Path = "/wp"
 
-            });
+            // });
 
             app.Run (async (context) => {
 
+                throw new Exception ("Error");
                 var greeting = Greeter.GetMessageOftheDay ();
                 await context.Response.WriteAsync (greeting);
             });
