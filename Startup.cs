@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace OdeToFood {
     public class Startup {
@@ -31,26 +32,48 @@ namespace OdeToFood {
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure (IApplicationBuilder app, IHostingEnvironment env, IGreeter Greeter) {
-            if (env.IsDevelopment ()) {
-                app.UseDeveloperExceptionPage ();
-            } else {
-                app.UseExceptionHandler ("/Error");
-                app.UseHsts ();
-            }
+        public void Configure (IApplicationBuilder app, IHostingEnvironment env, IGreeter Greeter, ILogger<Startup> logger) {
+
+            // if (env.IsDevelopment ()) {
+            //     app.UseDeveloperExceptionPage ();
+            // } else {
+            //     app.UseExceptionHandler ("/Error");
+            //     app.UseHsts ();
+            // }
+
+            app.Use (next => {
+
+                return async context => {
+                    logger.LogInformation ("Request incoming");
+                    if (context.Request.Path.StartsWithSegments ("/mym")) {
+
+                        await context.Response.WriteAsync ("HIT!");
+                          logger.LogInformation ("Request handled");
+
+                    } else {
+                        next (context);
+                    }
+                };
+
+            });
+
+            app.UseWelcomePage (new WelcomePageOptions {
+
+                Path = "/wp"
+
+            });
 
             app.Run (async (context) => {
 
                 var greeting = Greeter.GetMessageOftheDay ();
-
                 await context.Response.WriteAsync (greeting);
             });
 
-            app.UseHttpsRedirection ();
-            app.UseStaticFiles ();
-            app.UseCookiePolicy ();
+            // app.UseHttpsRedirection ();
+            // app.UseStaticFiles ();
+            // app.UseCookiePolicy ();
 
-            app.UseMvc ();
+            // app.UseMvc ();
         }
     }
 }
